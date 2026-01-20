@@ -5,12 +5,15 @@
     console.log('[LoginFiller] Script iniciado - verificando storage');
     
     const { loginFiller } = await chrome.storage.sync.get(['loginFiller']);
-    console.log('[LoginFiller] Storage recuperado:', { username: loginFiller?.username });
+    console.log('[LoginFiller] Storage recuperado:', { username: loginFiller?.username, terminalAutoLogin: loginFiller?.terminalAutoLogin });
     
     if (!loginFiller || !loginFiller.username || !loginFiller.password) {
       console.log('[LoginFiller] Credenciais não configuradas, abortando');
       return;
     }
+
+    // Verifica se auto-login de terminal está habilitado
+    const terminalAutoLoginEnabled = loginFiller.terminalAutoLogin === true;
   
     // ============= LÓGICA XTERM.JS (NOVA) =============
     
@@ -321,18 +324,23 @@
     }
   
     async function process() {
-        // Verifica se é Xterm na página raiz
-        if (isXtermPresent()) {
-            console.log('[LoginFiller] Xterm detectado na página raiz.');
-            processXterm();
-            return;
-        }
+        // Verifica se terminal auto-login está habilitado
+        if (!terminalAutoLoginEnabled) {
+            DEBUG && console.log('[LoginFiller] Terminal auto-login desabilitado na configuração');
+        } else {
+            // Verifica se é Xterm na página raiz
+            if (isXtermPresent()) {
+                console.log('[LoginFiller] Xterm detectado na página raiz.');
+                processXterm();
+                return;
+            }
 
-        // Verifica iframes que possam conter xterm
-        const iframes = document.querySelectorAll('iframe');
-        if (iframes.length > 0) {
-            DEBUG && console.log(`[LoginFiller] ${iframes.length} iframe(s) encontrado(s), verificando por xterm...`);
-            iframes.forEach(iframe => checkIframeForXterm(iframe));
+            // Verifica iframes que possam conter xterm
+            const iframes = document.querySelectorAll('iframe');
+            if (iframes.length > 0) {
+                DEBUG && console.log(`[LoginFiller] ${iframes.length} iframe(s) encontrado(s), verificando por xterm...`);
+                iframes.forEach(iframe => checkIframeForXterm(iframe));
+            }
         }
 
         DEBUG && console.log('Procurando botão de login tradicional...');
@@ -346,6 +354,12 @@
 
     // Monitora iframes que surgem dinamicamente e processa xterm dentro deles
     function monitorIframes() {
+        // Só inicia monitoramento se terminal auto-login estiver habilitado
+        if (!terminalAutoLoginEnabled) {
+            DEBUG && console.log('[Iframe] Terminal auto-login desabilitado, pulando monitoramento de iframes');
+            return;
+        }
+
         DEBUG && console.log('[Iframe] Iniciando monitoramento de iframes...');
 
         const iframeObserver = new MutationObserver((mutations) => {

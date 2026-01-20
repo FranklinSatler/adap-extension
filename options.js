@@ -1,7 +1,8 @@
 function save() {
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value;
-  chrome.storage.sync.set({ loginFiller: { username, password } }, () => {
+  const terminalAutoLogin = document.getElementById('terminalAutoLogin').checked;
+  chrome.storage.sync.set({ loginFiller: { username, password, terminalAutoLogin } }, () => {
     setStatus('Dados salvos');
   });
 }
@@ -10,6 +11,7 @@ function load() {
     if (data.loginFiller) {
       document.getElementById('username').value = data.loginFiller.username || '';
       document.getElementById('password').value = data.loginFiller.password || '';
+      document.getElementById('terminalAutoLogin').checked = data.loginFiller.terminalAutoLogin || false;
     }
   });
 }
