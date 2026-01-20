@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Filler</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 12px; width: 260px; }
+    label { display:block; font-size:12px; margin-top:8px; }
+    input[type=text], input[type=password] { width:100%; padding:6px; box-sizing:border-box; }
+    button { margin-top:12px; width:100%; padding:8px; cursor:pointer; }
+    .status { font-size: 11px; color: #555; margin-top:6px; }
+    .row { display:flex; gap:6px; }
+    .row > * { flex:1; }
+    small a { color:#0366d6; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <h3>Login Filler</h3>
+  <div id="setup">
+    <label>Usuário</label>
+    <input id="username" type="text" autocomplete="off" />
+    <label>Senha</label>
+    <input id="password" type="password" autocomplete="new-password" />
+    <button id="save">Salvar</button>
+    <div class="status" id="status"></div>
+    <small><a href="options.html" target="_blank">Mais opções</a></small>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

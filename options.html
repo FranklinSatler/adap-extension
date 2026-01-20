@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Opções - Login Filler</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:20px; max-width:600px; }
+    label { display:block; margin-top:12px; font-size:13px; }
+    input, textarea { width:100%; padding:8px; box-sizing:border-box; }
+    button { margin-top:16px; padding:10px 16px; }
+    .danger { background:#c62828; color:#fff; border:none; }
+    .row { display:flex; gap:12px; }
+    .row > div { flex:1; }
+    .note { font-size:12px; color:#555; }
+  </style>
+</head>
+<body>
+  <h2>Configurações do Login Filler</h2>
+  <p class="note">Armazena um usuário e senha e tenta preencher automaticamente em páginas que tenham campos de login.</p>
+
+  <label>Usuário</label>
+  <input id="username" type="text" />
+  <label>Senha</label>
+  <input id="password" type="password" />
+
+  <button id="save">Salvar</button>
+  <button id="clear" class="danger">Apagar Dados</button>
+  <div id="status" class="note" style="margin-top:10px"></div>
+
+  <script src="options.js"></script>
+</body>
+</html>
